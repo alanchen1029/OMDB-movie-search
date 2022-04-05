@@ -6,8 +6,14 @@ node version : 12.0.0
 
 # Getting Started
 Install dependencies
-```npm install```
+```
+npm install
+```
 Run the project
-```npm start```
+```
+npm start
+```
 If the code fails to open your browser automatically, please hit the url below
-```https://localhost:8080```
+```
+https://localhost:8080
+```
