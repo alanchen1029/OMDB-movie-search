@@ -1,11 +1,14 @@
 import React from 'react';
 
-import "../assets/stylesheets/layout.sass";
+import "../assets/stylesheets/style.sass";
+import MovieSearchMain from '../MovieSearchPage/MovieSearchMain';
 
 const App = (): JSX.Element =>
 {
   return (
-    <div>app running</div>
+    <div className="main-content">
+      <MovieSearchMain />
+    </div>
   );
 };
 
