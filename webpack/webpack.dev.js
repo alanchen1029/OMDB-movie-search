@@ -26,13 +26,6 @@ module.exports = merge(common, {
         warnings: false,
       },
     },
-    // proxy: {
-    //   "/api": {
-    //     target: "http://[::1]:3000", // Dev API
-    //     secure: false,
-    //     changeOrigin: true,
-    //   },
-    // },
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -40,6 +33,10 @@ module.exports = merge(common, {
     }),
     new MiniCssExtractPlugin({
       filename: "main.css",
+    }),
+    new webpack.DefinePlugin({
+      API_KEY: JSON.stringify("3e16d23c"),
+      BASE_URL: JSON.stringify("http://www.omdbapi.com/"),
     }),
   ],
 });
