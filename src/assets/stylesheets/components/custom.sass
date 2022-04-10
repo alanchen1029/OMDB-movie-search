@@ -1,0 +1,14 @@
+body
+  // for skeleton
+  span[aria-live="polite"]
+    width: 100%
+    .react-loading-skeleton
+      margin-bottom: $general-gutter
+
+  // remove(delay 5000s) chrome autofill background
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active 
+      transition: background-color 5000s ease-in-out 0s
+      -webkit-text-fill-color: white

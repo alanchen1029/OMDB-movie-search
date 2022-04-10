@@ -6,9 +6,9 @@ import MovieSearchMain from '../MovieSearchPage/MovieSearchMain';
 const App = (): JSX.Element =>
 {
   return (
-    <div className="main-content">
+    <main className="app-main">
       <MovieSearchMain />
-    </div>
+    </main>
   );
 };
 

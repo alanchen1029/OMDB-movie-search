@@ -1,8 +1,128 @@
 body
   margin: 0
+  &::-webkit-scrollbar 
+    width: 0
   *
     box-sizing: border-box
     font-family: 'Lato'
-  .main-content
-    max-width: $page-max-width
-    margin: 0 auto
+  main
+    .main-content
+      max-width: $page-max-width
+      margin: 0 auto
+      padding: 0 $general-gutter 
+      +flex(flex-start)
+      gap: $general-gutter * 2
+      padding-top: $header-height
+      .grid-x
+        width: 100%
+      .movies-list
+        height: calc(100vh - $header-height)
+        flex-grow: 1
+        min-width: 45%
+        +transition(all .3s ease-in-out)
+        .infinite-scroll-component
+          &::-webkit-scrollbar 
+            width: 10px
+          &::-webkit-scrollbar-track 
+            background: transparent
+          &::-webkit-scrollbar-thumb 
+            background: $medium-gray
+          &::-webkit-scrollbar-thumb:hover 
+            background: $gray
+        .movies-quantity
+          text-transform: uppercase
+          padding: $general-gutter * 2
+          color: $gray
+        .movie-item
+          padding: $general-gutter * 2
+          border-bottom: 1px solid $light-gray
+          cursor: pointer
+          +flex(center, flex-start)
+          gap: $general-gutter
+          +transition(all .3s ease-in-out)
+          &:last-of-type
+            border-bottom: none
+          &:hover, &.selected
+            background: $light-gray
+          .movie-poster
+            height: 80px
+            width: 80px
+            min-width: 80px
+            object-fit: cover
+            border-radius: 10px
+          .movie-info
+            +flex(flex-start, flex-start, column)
+            gap: $general-gutter / 2
+            .movie-title
+              color: $black
+              font-size: 1.5rem
+              line-height: 1.2
+            .movie-year
+              color: $font-gray
+      .movie-details-wrapper
+        +flex(flex-start, flex-start,column)
+        > div
+          border-bottom: 1px solid $light-gray
+          padding: $general-gutter * 2 0
+          width: 100%
+        .movie-details-top
+          .left
+            display: flex
+            > img
+              border-radius: 10px
+          .right
+            +flex(flex-start, space-between, column)
+            .action-container
+              width: 100%
+              display: flex
+              > button
+                margin-left: auto
+            .info-container
+              +flex(flex-start, flex-start, column)
+              gap: $general-gutter
+              width: 100%
+              .title
+                font-size: 2.5rem
+                font-weight: 900
+                line-height: 1.2
+              .actors
+                font-size: 1.5rem
+                color: $black
+                line-height: 1.2
+              .others
+                > span
+                  font-size: 1rem
+                  color: $black
+                .rated
+                  padding: 0.3rem 1rem
+                  border: 1px solid $black
+                  border-radius: 5px
+                  margin-right: $general-gutter / 2
+                .year, .genre
+                  &::after
+                    content: ""
+                    width: 2px
+                    height: 2px
+                    background: $black
+                    border-radius: 50%
+                    margin: 5px
+                    display: inline-block
+        .movie-details-middle
+          .plot
+            font-size: 1.5rem
+            color: $black
+        .movie-details-bottom
+          border-bottom: none
+          width: 100%
+          .ratings-list
+            +flex(flex-start, space-between, row, nowrap)
+            .rating-item
+              +flex(center,center,column)
+              gap: $general-gutter
+              border-right: 1px solid $light-gray
+              flex-grow: 1
+              &:last-of-type
+                border: none
+              > span
+                font-size: 1rem
+                color: $black
