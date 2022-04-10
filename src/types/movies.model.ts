@@ -18,5 +18,6 @@ export interface IMovieDetails extends IMoviesListItem
   Plot: string;
   Rated: string;
   Genre: string;
+  Runtime: string;
   Ratings: MovieRatings[];
 };
