@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Skeleton from "react-loading-skeleton";
+import Button from '@mui/material/Button';
 
-import { IMovieDetails } from '../../types/movies.model';
+import { CtaMessagesEnum, IMovieDetails } from '../../types/movies.model';
 import PosterNotAvailable from "../../assets/images/no-image-available.jpeg";
+import CtaPanel from '../../_components/CtaPanel';
+import { WatchListContext } from '../../_context/watchListContext';
 
 interface IMovieDetailsProps
 {
@@ -12,6 +15,22 @@ interface IMovieDetailsProps
 
 export const MovieDetails = ({ selectedMovieDetails, isMovieDetailsLoading }: IMovieDetailsProps): JSX.Element =>
 {
+  const { watchlist, addMovieToWatchlist, removeMovieFromWatchlist } = useContext(WatchListContext);
+
+  const handleClick = () =>
+  {
+    if (selectedMovieDetails)
+    {
+      watchlist.find((movie) => movie.imdbID === selectedMovieDetails.imdbID) ? removeMovieFromWatchlist(selectedMovieDetails.imdbID) : addMovieToWatchlist({
+        Poster: selectedMovieDetails.Poster,
+        Title: selectedMovieDetails.Title,
+        Type: selectedMovieDetails.Type,
+        Year: selectedMovieDetails.Year,
+        imdbID: selectedMovieDetails.imdbID
+      });
+    }
+  };
+
   const movieDetailsLoadingView = () =>
   {
     return (
@@ -41,12 +60,12 @@ export const MovieDetails = ({ selectedMovieDetails, isMovieDetailsLoading }: IM
         </div>
       </section>
     )
-  }
+  };
 
   if (isMovieDetailsLoading)
   {
     return movieDetailsLoadingView();
-  }
+  };
 
   return (
     <section className="movie-details-wrapper">
@@ -59,7 +78,13 @@ export const MovieDetails = ({ selectedMovieDetails, isMovieDetailsLoading }: IM
               </div>
               <div className="cell small-12 medium-7 right">
                 <div className="action-container">
-                  <button className="button">Watchlist</button>
+                  <Button
+                    variant="outlined"
+                    color={`${watchlist.find((movie) => movie.imdbID === selectedMovieDetails.imdbID) ? "error" : "inherit"}`}
+                    onClick={handleClick}
+                  >
+                    {watchlist.find((movie) => movie.imdbID === selectedMovieDetails.imdbID) ? "Remove From Watchlist" : "Watchlist"}
+                  </Button>
                 </div>
                 <div className="info-container">
                   <span className="title">{selectedMovieDetails.Title}</span>
@@ -92,7 +117,7 @@ export const MovieDetails = ({ selectedMovieDetails, isMovieDetailsLoading }: IM
           </div>
         </>
         :
-        <div> find a movie</div>
+        <CtaPanel ctaMessage={CtaMessagesEnum.ViewFullDetails} />
       }
     </section>
   );

@@ -7,14 +7,19 @@ body
     left: 0
     right: 0
     z-index: 999
-    .search-bar-wrapper
+    +flex
+    .header-wrapper
       max-width: $page-max-width
       margin: 0 auto
       padding: $general-gutter * 2
       +flex(center, space-between)
-      .search-container
-        > label
+      flex-grow: 1
+      .left-container
+        > label, > a
           +flex
+          color: white
+          font-weight: bold
+          font-size: 2rem
           svg
             height: 40px
             width: 40px
@@ -28,7 +33,7 @@ body
             color: white
             font-weight: bold
             font-size: 2rem
-      .filter-container
+      .right-container
         +flex
         gap: $general-gutter * 2
         .year-filter
@@ -56,3 +61,12 @@ body
                 text-transform: capitalize
                 color: white
                 font-size: 1rem
+        .watchlist-counter
+          > a
+            +flex
+            padding: 0.3rem $general-gutter
+            gap: 5px
+            border-radius: 5px
+            background: white
+            color: $black
+            font-weight: bold

@@ -1,7 +1,7 @@
 # OMDB-movie-search
 By using the OMDB API to build a movie/series search 
 
-# Perquisite
+# Prerequisite
 node version : 12.0.0
 
 # Getting Started
@@ -26,3 +26,4 @@ https://localhost:8080
 | [React Loading Skeleton](https://github.com/dvtng/react-loading-skeleton#readme) | Loading views for movies list section and movie details section  |
 | [react-infinite-scroll-component](https://github.com/ankeetmaini/react-infinite-scroll-component#readme) | Enabled movies list to be able to scroll down and request more result from OMDB API, and interacted with loading skeleton at the same time  |
 | [React Icons](https://react-icons.github.io/react-icons/)     | Icons Library | 
+| [useDebounce](https://github.com/xnimorz/use-debounce)     | Call api request every time the user enter a character in search input is too expansive, this hook compare prev and next value and trigger debounce timer. In this case, search input text state change triggers until user stops typing for 500ms  | 
