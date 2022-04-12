@@ -8,14 +8,24 @@ import PosterNotAvailable from "../../assets/images/no-image-available.jpeg";
 interface IMoviesList
 {
   isMovieListLoading: boolean;
-  searchedResultsQuantity: string;
+  hasLoadedAll: boolean;
+  searchedResultsQuantity: number;
   moviesList: IMoviesListItem[] | [];
   selectedMovieID: string;
   getSelectedMovieID: (movieID: string) => void;
   requestMoreMovieListItems: () => void;
 }
 
-export const MoviesList = ({ isMovieListLoading, searchedResultsQuantity, moviesList, selectedMovieID, getSelectedMovieID, requestMoreMovieListItems }: IMoviesList): JSX.Element =>
+export const MoviesList = (
+  {
+    isMovieListLoading,
+    hasLoadedAll,
+    searchedResultsQuantity,
+    moviesList,
+    selectedMovieID,
+    getSelectedMovieID,
+    requestMoreMovieListItems
+  }: IMoviesList): JSX.Element =>
 {
   const moviesListLoadingView = () =>
   {
@@ -26,23 +36,21 @@ export const MoviesList = ({ isMovieListLoading, searchedResultsQuantity, movies
 
   return (
     <div className='movies-list'>
-      {moviesList.length > 0 &&
+      {moviesList.length > 0 ?
         <InfiniteScroll
           dataLength={moviesList.length}
           next={requestMoreMovieListItems}
-          hasMore={moviesList.length < parseInt(searchedResultsQuantity) ? true : false}
+          hasMore={moviesList.length < searchedResultsQuantity && !hasLoadedAll ? true : false}
           height={"calc(100vh - 120px)"}
           loader={moviesListLoadingView()}
           endMessage={
-            moviesList.length > 10 ?
-              <p style={{ textAlign: 'center' }}>
-                <b>Yay! You have seen it all</b>
-              </p>
-              : null
+            <p className="reach-end-hint">
+              <b>Yay! You have seen it all</b>
+            </p>
           }
         >
           <div className="movies-quantity">
-            {searchedResultsQuantity} RESULTS
+            {moviesList.length} RESULTS {!hasLoadedAll && " , SCROLL DOWN TO FIND MORE."}
           </div>
           {moviesList.map((movie) =>
           (
@@ -64,10 +72,16 @@ export const MoviesList = ({ isMovieListLoading, searchedResultsQuantity, movies
           )
           )}
         </InfiniteScroll>
+        :
+        <div className="movies-quantity">
+          {isMovieListLoading ? "LOADING DATA...." : "NO RESULTS FOUND"}
+        </div>
       }
-      {isMovieListLoading &&
-        moviesListLoadingView()
-      }
+      <div className='loader'>
+        {isMovieListLoading &&
+          moviesListLoadingView()
+        }
+      </div>
     </div>
   );
 }
