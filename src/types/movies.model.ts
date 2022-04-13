@@ -35,5 +35,6 @@ export enum CtaMessagesEnum
 export enum OMDBAPIErrorMessagesEnum
 {
   TooManyResults = "Too many results.",
-  NotFound = "Movie not found!"
+  NotFound = "Movie not found!",
+  NotFoundSeries = "Series not found!"
 };

@@ -4,12 +4,12 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 import { IMoviesListItem } from '../../types/movies.model';
 import PosterNotAvailable from "../../assets/images/no-image-available.jpeg";
+import Button from '@mui/material/Button';
 
 interface IMoviesList
 {
   isMovieListLoading: boolean;
   hasLoadedAll: boolean;
-  searchedResultsQuantity: number;
   moviesList: IMoviesListItem[] | [];
   selectedMovieID: string;
   getSelectedMovieID: (movieID: string) => void;
@@ -20,7 +20,6 @@ export const MoviesList = (
   {
     isMovieListLoading,
     hasLoadedAll,
-    searchedResultsQuantity,
     moviesList,
     selectedMovieID,
     getSelectedMovieID,
@@ -34,13 +33,29 @@ export const MoviesList = (
     )
   };
 
+  const requestMoreButton = () =>
+  {
+    return (
+      <div className="action-container">
+        <Button
+          variant="outlined"
+          color="inherit"
+          onClick={requestMoreMovieListItems}
+          disabled={isMovieListLoading}
+        >
+          Search More
+        </Button>
+      </div>
+    )
+  }
+
   return (
     <div className='movies-list'>
       {moviesList.length > 0 ?
         <InfiniteScroll
           dataLength={moviesList.length}
           next={requestMoreMovieListItems}
-          hasMore={moviesList.length < searchedResultsQuantity && !hasLoadedAll ? true : false}
+          hasMore={!hasLoadedAll}
           height={"calc(100vh - 120px)"}
           loader={moviesListLoadingView()}
           endMessage={
@@ -50,7 +65,8 @@ export const MoviesList = (
           }
         >
           <div className="movies-quantity">
-            {moviesList.length} RESULTS {!hasLoadedAll && " , SCROLL DOWN TO FIND MORE."}
+            {moviesList.length} RESULTS
+            {!hasLoadedAll && ` , SCROLL DOWN ${moviesList.length < 10 ? "OR CLICK BUTTON" : ""} TO FIND MORE.`}
           </div>
           {moviesList.map((movie) =>
           (
@@ -71,17 +87,25 @@ export const MoviesList = (
             </div>
           )
           )}
+          {!hasLoadedAll && moviesList.length < 10 &&
+            requestMoreButton()
+          }
         </InfiniteScroll>
         :
         <div className="movies-quantity">
-          {isMovieListLoading ? "LOADING DATA...." : "NO RESULTS FOUND"}
+          {isMovieListLoading ?
+            <>
+              SEARCHING....
+              {moviesListLoadingView()}
+            </>
+            :
+            `NO RESULTS MATCH, CHANGE SEARCH SETTINGS ${!hasLoadedAll ? "OR SEARCH MORE" : ""}.`
+          }
+          {!hasLoadedAll &&
+            requestMoreButton()
+          }
         </div>
       }
-      <div className='loader'>
-        {isMovieListLoading &&
-          moviesListLoadingView()
-        }
-      </div>
     </div>
   );
 }
