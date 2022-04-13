@@ -10,7 +10,6 @@ interface IMoviesList
 {
   isMovieListLoading: boolean;
   hasLoadedAll: boolean;
-  searchedResultsQuantity: number;
   moviesList: IMoviesListItem[] | [];
   selectedMovieID: string;
   getSelectedMovieID: (movieID: string) => void;
@@ -21,7 +20,6 @@ export const MoviesList = (
   {
     isMovieListLoading,
     hasLoadedAll,
-    searchedResultsQuantity,
     moviesList,
     selectedMovieID,
     getSelectedMovieID,
@@ -34,6 +32,22 @@ export const MoviesList = (
       <Skeleton count={10} height={145} />
     )
   };
+
+  const requestMoreButton = () =>
+  {
+    return (
+      <div className="action-container">
+        <Button
+          variant="outlined"
+          color="inherit"
+          onClick={requestMoreMovieListItems}
+          disabled={isMovieListLoading}
+        >
+          Search More
+        </Button>
+      </div>
+    )
+  }
 
   return (
     <div className='movies-list'>
@@ -52,8 +66,7 @@ export const MoviesList = (
         >
           <div className="movies-quantity">
             {moviesList.length} RESULTS
-            {!hasLoadedAll && " , SCROLL DOWN TO FIND MORE."}
-
+            {!hasLoadedAll && ` , SCROLL DOWN ${moviesList.length < 10 ? "OR CLICK BUTTON" : ""} TO FIND MORE.`}
           </div>
           {moviesList.map((movie) =>
           (
@@ -75,34 +88,22 @@ export const MoviesList = (
           )
           )}
           {!hasLoadedAll && moviesList.length < 10 &&
-            <div className="action-container">
-              <Button
-                variant="outlined"
-                color="inherit"
-                onClick={requestMoreMovieListItems}
-                disabled={isMovieListLoading}
-              >
-                Search More
-              </Button>
-            </div>
+            requestMoreButton()
           }
         </InfiniteScroll>
         :
         <div className="movies-quantity">
-          {isMovieListLoading ? "SEARCHING...." : `NO RESULTS MATCH, CHANGE FILTER SETTINGS ${!hasLoadedAll ? "OR SEARCH MORE" : ""}.`}
-        </div>
-      }
-      {isMovieListLoading && moviesListLoadingView()}
-      {!hasLoadedAll &&
-        <div className="action-container">
-          <Button
-            variant="outlined"
-            color="inherit"
-            onClick={requestMoreMovieListItems}
-            disabled={isMovieListLoading}
-          >
-            Search More
-          </Button>
+          {isMovieListLoading ?
+            <>
+              SEARCHING....
+              {moviesListLoadingView()}
+            </>
+            :
+            `NO RESULTS MATCH, CHANGE SEARCH SETTINGS ${!hasLoadedAll ? "OR SEARCH MORE" : ""}.`
+          }
+          {!hasLoadedAll &&
+            requestMoreButton()
+          }
         </div>
       }
     </div>

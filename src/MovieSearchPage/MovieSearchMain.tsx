@@ -87,6 +87,9 @@ const MovieSearchMain = (): JSX.Element =>
             case OMDBAPIErrorMessagesEnum.NotFound:
               setCtaMsg(CtaMessagesEnum.NoResultFound);
               break;
+            case OMDBAPIErrorMessagesEnum.NotFoundSeries:
+              setCtaMsg(CtaMessagesEnum.NoResultFound);
+              break;
             default:
               setCtaMsg(CtaMessagesEnum.DefaultMessage);
           }
@@ -232,7 +235,6 @@ const MovieSearchMain = (): JSX.Element =>
               <MoviesList
                 isMovieListLoading={isMovieListLoading}
                 hasLoadedAll={(moviesListOriginal.length === searchedResultsQuantity)}
-                searchedResultsQuantity={searchedResultsQuantity}
                 moviesList={moviesList}
                 selectedMovieID={selectedMovieID}
                 getSelectedMovieID={getSelectedMovieID}
