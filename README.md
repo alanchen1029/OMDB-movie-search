@@ -25,7 +25,7 @@ Based on description and design, this task should mainly include:
 - Main section: render detailed movie data
 - Watchlist: State management tool should be involved
 # Flowchart
-![flow chart image](https://ibb.co/9prPzTb)
+[View the link please](https://ibb.co/9prPzTb)
 # Libraries Used 
 | Name        | Description        |
 | ------------- |:-------------:|
