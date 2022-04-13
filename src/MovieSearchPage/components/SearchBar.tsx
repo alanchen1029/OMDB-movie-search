@@ -10,11 +10,12 @@ import { WatchListContext } from '../../_context/watchListContext';
 
 interface ISearchBar
 {
+  isMovieListLoading: boolean;
   getSearchParamsChange: (params: string) => void;
   getSearchYearRangeChange: (range: number[]) => void;
 }
 
-export const SearchBar = ({ getSearchParamsChange, getSearchYearRangeChange }: ISearchBar): JSX.Element =>
+export const SearchBar = ({ isMovieListLoading, getSearchParamsChange, getSearchYearRangeChange }: ISearchBar): JSX.Element =>
 {
   const searchCategories = ["any", "movie", "series", "episode"];
   const [searchedTitle, setSearchedTitle] = useState("");
@@ -89,6 +90,7 @@ export const SearchBar = ({ getSearchParamsChange, getSearchYearRangeChange }: I
                 valueLabelDisplay="auto"
                 min={1878}
                 max={new Date().getFullYear()}
+                disabled={isMovieListLoading}
               />
               <span>{searchedYearRange[1]}</span>
             </div>
@@ -104,6 +106,7 @@ export const SearchBar = ({ getSearchParamsChange, getSearchYearRangeChange }: I
                     value={category}
                     name={category}
                     id={category}
+                    disabled={isMovieListLoading}
                     sx={{
                       color: "#ffffff",
                       '&.Mui-checked': {

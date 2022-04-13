@@ -60,10 +60,9 @@ const MovieSearchMain = (): JSX.Element =>
     })
       .then((response) =>
       {
-        setSearchedResultsQuantity(parseInt(response.data.totalResults));
+        setCtaMsg(null);
         if (response.data.Search)
         {
-          setCtaMsg(null);
           if (pageNum === 1)
           {
             setMoviesListOriginal(response.data.Search);
@@ -71,13 +70,15 @@ const MovieSearchMain = (): JSX.Element =>
           {
             // concat moviesListOriginal with next page's data
             setMoviesListOriginal([...moviesListOriginal, ...response.data.Search]);
-          }
+          };
+          setSearchedResultsQuantity(parseInt(response.data.totalResults));
         };
 
         // errors, display cta message and reset movies list
         if (response.data.Error)
         {
           setMoviesList([]);
+          setMoviesListOriginal([]);
           switch (response.data.Error)
           {
             case OMDBAPIErrorMessagesEnum.TooManyResults:
@@ -93,6 +94,8 @@ const MovieSearchMain = (): JSX.Element =>
       })
       .catch((error) =>
       {
+        setMoviesList([]);
+        setMoviesListOriginal([]);
         setCtaMsg(CtaMessagesEnum.DefaultMessage);
       })
       .then(() =>
@@ -107,7 +110,6 @@ const MovieSearchMain = (): JSX.Element =>
     {
       filterMoviesListWithYearRange();
     };
-    // console.log(moviesListOriginal);
   }, [moviesListOriginal]);
 
   // when search params change, reset search and selected movie
@@ -128,10 +130,10 @@ const MovieSearchMain = (): JSX.Element =>
   // when scrolling down to the end of movie list, request another page of data
   const requestMoreMovieListItems = () =>
   {
-    if (requestPageNum < Math.ceil(searchedResultsQuantity / 10))
+    if (requestPageNum < Math.ceil(searchedResultsQuantity / 10) && requestPageNum <= 100)
     {
       setRequestPageNum(requestPageNum + 1);
-    }
+    };
   };
 
   useEffect(() =>
@@ -163,10 +165,12 @@ const MovieSearchMain = (): JSX.Element =>
         if (parseInt(movie.Year) >= searchedYearRange[0] && parseInt(movie.Year) <= searchedYearRange[1])
         {
           return movie;
-        }
+        };
       });
+
       const removedDuplicationArr = removeDuplication(newArr);
-      if (removedDuplicationArr.length === moviesList.length)
+      // new request page has no result within year range OR current moviesList is too few, request next page
+      if (removedDuplicationArr.length === moviesList.length || moviesList.length < 10)
       {
         requestMoreMovieListItems();
       }
@@ -177,7 +181,6 @@ const MovieSearchMain = (): JSX.Element =>
       }
     }
   };
-  console.log(moviesList, moviesListOriginal, searchedYearRange);
 
   // when a movie selected from the movie list, request this movie's details by id
   const getSelectedMovieID = (movieID: string) =>
@@ -203,6 +206,8 @@ const MovieSearchMain = (): JSX.Element =>
       })
       .catch((error) =>
       {
+        setMoviesList([]);
+        setMoviesListOriginal([]);
         setCtaMsg(CtaMessagesEnum.DefaultMessage);
       })
       .then(() =>
@@ -214,6 +219,7 @@ const MovieSearchMain = (): JSX.Element =>
   return (
     <>
       <SearchBar
+        isMovieListLoading={isMovieListLoading}
         getSearchParamsChange={getSearchParamsChange}
         getSearchYearRangeChange={getSearchYearRangeChange}
       />
@@ -225,7 +231,7 @@ const MovieSearchMain = (): JSX.Element =>
             <div className="cell small-12 medium-5">
               <MoviesList
                 isMovieListLoading={isMovieListLoading}
-                hasLoadedAll={(moviesListOriginal.length >= searchedResultsQuantity)}
+                hasLoadedAll={(moviesListOriginal.length === searchedResultsQuantity)}
                 searchedResultsQuantity={searchedResultsQuantity}
                 moviesList={moviesList}
                 selectedMovieID={selectedMovieID}

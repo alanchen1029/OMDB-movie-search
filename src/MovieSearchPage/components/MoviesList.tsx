@@ -4,6 +4,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 import { IMoviesListItem } from '../../types/movies.model';
 import PosterNotAvailable from "../../assets/images/no-image-available.jpeg";
+import Button from '@mui/material/Button';
 
 interface IMoviesList
 {
@@ -40,7 +41,7 @@ export const MoviesList = (
         <InfiniteScroll
           dataLength={moviesList.length}
           next={requestMoreMovieListItems}
-          hasMore={moviesList.length < searchedResultsQuantity && !hasLoadedAll ? true : false}
+          hasMore={!hasLoadedAll}
           height={"calc(100vh - 120px)"}
           loader={moviesListLoadingView()}
           endMessage={
@@ -50,7 +51,9 @@ export const MoviesList = (
           }
         >
           <div className="movies-quantity">
-            {moviesList.length} RESULTS {!hasLoadedAll && " , SCROLL DOWN TO FIND MORE."}
+            {moviesList.length} RESULTS
+            {!hasLoadedAll && " , SCROLL DOWN TO FIND MORE."}
+
           </div>
           {moviesList.map((movie) =>
           (
@@ -71,17 +74,37 @@ export const MoviesList = (
             </div>
           )
           )}
+          {!hasLoadedAll && moviesList.length < 10 &&
+            <div className="action-container">
+              <Button
+                variant="outlined"
+                color="inherit"
+                onClick={requestMoreMovieListItems}
+                disabled={isMovieListLoading}
+              >
+                Search More
+              </Button>
+            </div>
+          }
         </InfiniteScroll>
         :
         <div className="movies-quantity">
-          {isMovieListLoading ? "LOADING DATA...." : "NO RESULTS FOUND"}
+          {isMovieListLoading ? "SEARCHING...." : `NO RESULTS MATCH, CHANGE FILTER SETTINGS ${!hasLoadedAll ? "OR SEARCH MORE" : ""}.`}
         </div>
       }
-      <div className='loader'>
-        {isMovieListLoading &&
-          moviesListLoadingView()
-        }
-      </div>
+      {isMovieListLoading && moviesListLoadingView()}
+      {!hasLoadedAll &&
+        <div className="action-container">
+          <Button
+            variant="outlined"
+            color="inherit"
+            onClick={requestMoreMovieListItems}
+            disabled={isMovieListLoading}
+          >
+            Search More
+          </Button>
+        </div>
+      }
     </div>
   );
 }
