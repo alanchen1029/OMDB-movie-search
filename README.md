@@ -25,7 +25,7 @@ Based on description and design, this task should mainly include:
 - Main section: render detailed movie data
 - Watchlist: State management tool should be involved
 # Flowchart
-![flow chart image](https://github.com/alanchen1029/OMDB-movie-search/test/test_fix_bugs/src/assets/images/Flowchart.jpeg?raw=true)
+[View the link please](https://ibb.co/9prPzTb)
 # Libraries Used 
 | Name        | Description        |
 | ------------- |:-------------:|
